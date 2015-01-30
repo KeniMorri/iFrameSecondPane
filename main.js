@@ -14,19 +14,19 @@ define(function (require, exports, module) {
         Commands = brackets.getModule("command/Commands");
 
     var _panel;
+    var _edits;
+    var _more;
     var reviewpaneHTML = require("text!2pane.html");
     function main(){
         
     }
 
     function init() {
-        console.log("Run");
-        //SidebarView._handleSplitViewVertical();
         CommandManager.execute(Commands.CMD_SPLITVIEW_VERTICAL);
         _panel = $('#second-pane');
         _panel.empty().append($(reviewpaneHTML));
-        //_panel = $('#editor-holder');
-        //_panel.find('.second-pane').empty();
+        _edits = $('.main-toolbar').hide();
+        _more = $('.content').css("right","0");
     }
     
     // First, register a command - a UI-less object associating an id to a handler
