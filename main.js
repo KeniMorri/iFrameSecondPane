@@ -20,7 +20,7 @@ define(function (require, exports, module) {
     }
 
     function init() {
-        console.log("Nope");
+        console.log("Run");
         
         _panel = $('#second-pane');
         _panel.empty().append($(reviewpaneHTML));
@@ -29,8 +29,8 @@ define(function (require, exports, module) {
     }
     
     // First, register a command - a UI-less object associating an id to a handler
-    var MY_COMMAND_ID2 = "Erase"; // package-style naming to avoid collisions
-    CommandManager.register("Erase", MY_COMMAND_ID2, init);
+    var MY_COMMAND_ID2 = "ErasePane2"; // package-style naming to avoid collisions
+    CommandManager.register("Reveal Preview iFrame", MY_COMMAND_ID2, init);
     var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
     menu.addMenuItem(MY_COMMAND_ID2);
     
