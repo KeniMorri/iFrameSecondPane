@@ -10,18 +10,19 @@ define(function (require, exports, module) {
         EditorManager       = brackets.getModule("editor/EditorManager"),
         ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
         WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
-        SidebarView = brackets.getModule("project/SidebarView"),
+        SidebarView             = brackets.getModule("project/SidebarView"),
         Commands = brackets.getModule("command/Commands");
 
     var _panel;
     var reviewpaneHTML = require("text!2pane.html");
     function main(){
-        Commands.CMD_SPLITVIEW_VERTICAL;
+        
     }
 
     function init() {
         console.log("Run");
-        
+        //SidebarView._handleSplitViewVertical();
+        CommandManager.execute(Commands.CMD_SPLITVIEW_VERTICAL);
         _panel = $('#second-pane');
         _panel.empty().append($(reviewpaneHTML));
         //_panel = $('#editor-holder');
@@ -35,7 +36,7 @@ define(function (require, exports, module) {
     menu.addMenuItem(MY_COMMAND_ID2);
     
     AppInit.appReady(function(){
-
+        init();
 
     });
 });
