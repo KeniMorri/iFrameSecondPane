@@ -7,36 +7,55 @@ define(function (require, exports, module) {
     var CommandManager      = brackets.getModule("command/CommandManager"),
         Menus               = brackets.getModule("command/Menus"),
         AppInit             = brackets.getModule("utils/AppInit"),
-        EditorManager       = brackets.getModule("editor/EditorManager"),
-        ExtensionUtils      = brackets.getModule("utils/ExtensionUtils"),
-        WorkspaceManager = brackets.getModule("view/WorkspaceManager"),
-        SidebarView             = brackets.getModule("project/SidebarView"),
-        Commands = brackets.getModule("command/Commands");
+        Commands            = brackets.getModule("command/Commands"),
+        _panel;
 
-    var _panel;
-    var _edits;
-    var _more;
-    var reviewpaneHTML = require("text!2pane.html");
-    function main(){
-        
-    }
-
+    /**
+     * Runs on brackets launch, shows iframe, then fills it with default html
+     */
     function init() {
-        CommandManager.execute(Commands.CMD_SPLITVIEW_VERTICAL);
-        _panel = $('#second-pane');
-        _panel.empty().append($(reviewpaneHTML));
-        _edits = $('.main-toolbar').hide();
-        _more = $('.content').css("right","0");
+        show();
+        fill( require("text!iFramepreviewpane.html") );
     }
-    
-    // First, register a command - a UI-less object associating an id to a handler
-    var MY_COMMAND_ID2 = "ErasePane2"; // package-style naming to avoid collisions
-    CommandManager.register("Reveal Preview iFrame", MY_COMMAND_ID2, init);
-    var menu = Menus.getMenu(Menus.AppMenuBar.FILE_MENU);
-    menu.addMenuItem(MY_COMMAND_ID2);
-    
+
+    /**
+     * Show the iFrame Preview Pane
+     */
+    function show() {
+        CommandManager.execute(Commands.CMD_SPLITVIEW_VERTICAL);
+        _panel = $("#second-pane").empty();
+    }
+
+    /**
+     * Hide the iFrame Preview Pane
+     */
+    function hide() {
+        CommandManager.execute(Commands.CMD_SPLITVIEW_NONE);
+    }
+
+    /**
+     * Function used to fill the iFrame with a blob
+     * Takes in html with text! require statement
+     */
+    function fill(r_url) {
+        var blob = new Blob([r_url], {type: "text/html"});
+        var url = URL.createObjectURL(blob);
+        $("<iframe>", {
+            src: url,
+            id:  "iFramePreviewPane",
+            frameborder: 0,
+        }).css({ "width":"100%", "height":"100%" }).appendTo(_panel);
+    }
+    /**
+     * Runs the extension with the default iFrame and src
+     */
     AppInit.appReady(function(){
         init();
 
     });
+
+    // Define public API
+    exports.show = show;
+    exports.hide = hide;
+    exports.fill = fill;
 });
